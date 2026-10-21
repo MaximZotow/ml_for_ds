@@ -1,6 +1,7 @@
 # Exercise Sheet 1
 
-Notebook: [sheet01.ipynb](sheet01.ipynb)
+* Notebook: [sheet01-unsolved.ipynb](sheet01-unsolved.ipynb)
+* Solution: [sheet01-solution.ipynb](sheet01-solution.ipynb)
 
 ## Data sources (UCI Machine Learning Repository)
 
