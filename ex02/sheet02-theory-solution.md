@@ -16,7 +16,7 @@ the squared Euclidean distance between two points drawn from this distribution.
 
 *Hint:* write $y$ as a sum over coordinates, or use the chi-squared distribution $\chi^2_d$.
 
-**Answer:**
+**Solution:**
 
 Because vars are i.i.d. and drawn from Gaussian $\mathcal{N}(\mu=0,\sigma^2=1)$, following is true:
 
@@ -44,14 +44,24 @@ Which means $\operatorname{Var}(X) = \operatorname{E} \left[X^{2}\right] = \sigm
 
 $$
 \begin{split}
-y &= \sum \limits _{i=0}^d\left(\boldsymbol{x}_i - \boldsymbol{x}_i'\right)^2; \mathbb{E}(y)_{d=1} = \mathbb{E}(\boldsymbol{x}_i^2 - 2\boldsymbol{x}_i\boldsymbol{x}'_i+\boldsymbol{x}_i^2) \xRightarrow[\text{expectation}]{\text{linearity of}}\mathbb{E}(\boldsymbol{x}_i^2) - 2\mathbb{E}(\boldsymbol{x}_i\boldsymbol{x}'_i) + \mathbb{E}(\boldsymbol{x}_i^2)\\
+y &= \sum \limits _{i=0}^d\left(\boldsymbol{x}_i - \boldsymbol{x}_i'\right)^2; \mathbb{E}_i(y) = \mathbb{E}(\boldsymbol{x}_i^2 - 2\boldsymbol{x}_i\boldsymbol{x}'_i+\boldsymbol{x}_i^2) \xRightarrow[\text{expectation}]{\text{linearity of}}\mathbb{E}(\boldsymbol{x}_i^2) - 2\mathbb{E}(\boldsymbol{x}_i\boldsymbol{x}'_i) + \mathbb{E}(\boldsymbol{x}_i^2)\\
 &=1 + 2 \cancel{\mathbb{E}({\boldsymbol{x}_i})}\cancel{\mathbb{E}({\boldsymbol{x'}_i})} + 1 = 2
 \end{split}
 $$
 
+Again by linearity of expectation
+
+$$
+\mathbb{E}(y) = \mathbb{E}\left[\sum_d \left(\boldsymbol{x}_i - \boldsymbol{x}_i'\right)^2\right] = \sum_d\left(\mathbb{E}\left[\left(\boldsymbol{x}_i - \boldsymbol{x}_i'\right)^2\right]\right) = \sum_d 2 = 2d
+$$
+
 Concluding, $y=f(d) \to 2d$
 
-Answer: $y=2d$
+**Answer:**
+
+$$
+\boxed{\mathbb{E}(y) = 2d}
+$$
 
 ---
 
@@ -59,11 +69,88 @@ Answer: $y=2d$
 
 *Hint:* $\mathrm{Var}(\chi^2_d) = 2d$ and $\mathrm{Var}(aZ) = a^2\,\mathrm{Var}(Z)$.
 
+**Solution:**
+
+$$
+y(\boldsymbol{x}, \boldsymbol{x}') = \|\boldsymbol{x} - \boldsymbol{x}'\|^2
+$$
+
+Let's looks at $\boldsymbol{x} - \boldsymbol{x}'$. Both are drawn from $\mathcal{N}(0, I)$, therefore
+$$
+\begin{aligned}
+\mathbb{E}(\boldsymbol{x}) &= \mathbb{E}(\boldsymbol{x'}) = 0\\
+\operatorname{Var}(\boldsymbol{x}) &= \operatorname{Var}(\boldsymbol{x'}) = 1
+\end{aligned}
+$$
+
+Becusue $\boldsymbol{x}, \boldsymbol{x'}$ are i.i.d., following is true ([source](https://eng.libretexts.org/Bookshelves/Computer_Science/Programming_and_Computation_Fundamentals/Mathematics_for_Computer_Science_(Lehman_Leighton_and_Meyer)/04%3A_Probability/19%3A_Deviation_from_the_Mean/19.03%3A_Properties_of_Variance))
+
+$$
+\operatorname{Var}(\boldsymbol{x} - \boldsymbol{x'}) = \operatorname{Var}(\boldsymbol{x}) + \operatorname{Var}(\boldsymbol{x'}) = 1 + 1 = 2
+$$
+
+Let's analyze $t = (\boldsymbol{x} - \boldsymbol{x'})$.
+
+$$
+\begin{aligned}
+\mathbb{E}(t) \xRightarrow[\text{expectation}]{\text{linearity of}}\mathbb{E}(\boldsymbol{x}) - \mathbb{E}(\boldsymbol{x'}) &= 0 - 0 = 0\\
+\operatorname{Var}(t) &= 2
+\end{aligned}
+$$
+
+Let $z = \displaystyle{\frac{t}{\sqrt{2}}}$, then $\operatorname{Var}(t) = \operatorname{Var}(\sqrt{2}z) = 2\operatorname{Var}(z)$.
+
+$$
+y = \sum \limits _{i=0}^d\left(\boldsymbol{x}_i - \boldsymbol{x}_i'\right)^2 = \sum \limits _{i=0}^dt_i^2 = \sum \limits _{i=0}^d \left(\sqrt{2}z_i\right) ^ 2 = 2 \sum \limits _{i=0}^d z_i^2
+$$
+
+By definition if $Z_1\ldots Z_d$ are i.i.d. standard normal random variables, their sum of squares is distributed according to $\chi$ - squared distribution with $d$ degrees of freedom.
+
+$$
+\chi_d =\sum _{i=1}^{d}Z_{i}^{2}
+$$
+
+According to [this](https://math.stackexchange.com/questions/3032604/difference-of-i-i-d-random-variables-is-i-i-d) if $\boldsymbol{x}$ and $\boldsymbol{x'}$ i.i.d. then $t = (\boldsymbol{x} - \boldsymbol{x'})$ is also i.i.d.
+
+Therefore
+
+$$
+\begin{aligned}
+y &= 2 \sum \limits _{i=0}^d z_i^2 = 2 \chi_d^2\\
+\operatorname{Var}(y) &=\operatorname{Var}\left(2\chi_d^2\right) = 4\operatorname{Var}\left(\chi_d^2\right) = 4 \cdot 2d = 8d
+\end{aligned}
+$$
+
 **Answer:**
+
+$$
+\boxed{\operatorname{Var}(y) = 8d}
+$$
+
+---
 
 **(c)** Show that $\mathrm{std}[y] / \mathrm{E}[y] = \sqrt{2/d}$, and that therefore squared distances concentrate more as $d$ grows.
 
+**Solution:**
+
+$$
+\begin{cases}
+\text{from a: } \mathbb{E}(y) = 2d \\
+\text{from b: } \operatorname{Var}(y) = 8d \Rightarrow \operatorname{Std}(y) = \sqrt{8d}\\
+\end{cases}
+$$
+
+Therefore
+
+$$
+\frac{\operatorname{Std}(y)}{\mathbb{E}(y)} = \frac{\sqrt{8d}}{2d} = \sqrt{\frac{8d}{4d^2}} = \sqrt{\frac{2}{d}}
+$$
+
 **Answer:**
+
+$$
+\boxed{\frac{\operatorname{Std}(y)}{\mathbb{E}(y)} = \sqrt{\frac{2}{d}}} \quad \square
+$$
 
 ---
 
