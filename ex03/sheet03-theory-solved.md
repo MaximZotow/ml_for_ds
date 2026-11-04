@@ -286,19 +286,156 @@ $$
 
 and demonstrate that they all converge to zero as $\boldsymbol{w}$ approaches the eigenvector $\boldsymbol{u}_1$ and becomes orthogonal to the other eigenvectors. To demonstrate this, we proceed in three steps:
 
-**(a)** Show that $E_k(\boldsymbol{w}^{(t+1)}) = \dfrac{\boldsymbol{w}^{(t)\top} \Sigma \boldsymbol{u}_k}{\boldsymbol{w}^{(t)\top} \Sigma \boldsymbol{u}_1}$.
+**(a)** Show that
+
+$$
+E_k(\boldsymbol{w}^{(t+1)}) = \frac{\boldsymbol{w}^{(t)\top} \Sigma \boldsymbol{u}_k}{\boldsymbol{w}^{(t)\top} \Sigma \boldsymbol{u}_1}.
+$$
 
 **Answer:**
 
----
+$$
+\begin{aligned}
+E_k(\boldsymbol{w}^{(t+1)})
+&= \frac{\boldsymbol{w}^{(t+1)\top}\boldsymbol{u}_k}
+{\boldsymbol{w}^{(t+1)\top}\boldsymbol{u}_1}
+\\[6pt]
+&= \frac{
+\left(\frac{\Sigma\boldsymbol{w}^{(t)}}{\|\Sigma\boldsymbol{w}^{(t)}\|}\right)^\top
+\boldsymbol{u}_k
+}{
+\left(\frac{\Sigma\boldsymbol{w}^{(t)}}{\|\Sigma\boldsymbol{w}^{(t)}\|}\right)^\top
+\boldsymbol{u}_1
+}
+\\[6pt]
+&= \frac{
+(\Sigma\boldsymbol{w}^{(t)})^\top\boldsymbol{u}_k
+}{
+(\Sigma\boldsymbol{w}^{(t)})^\top\boldsymbol{u}_1
+}
+\\[6pt]
+&= \frac{
+\boldsymbol{w}^{(t)\top}\Sigma^\top\boldsymbol{u}_k
+}{
+\boldsymbol{w}^{(t)\top}\Sigma^\top\boldsymbol{u}_1
+}
+\\[6pt]
+&= \frac{
+\boldsymbol{w}^{(t)\top}\Sigma\boldsymbol{u}_k
+}{
+\boldsymbol{w}^{(t)\top}\Sigma\boldsymbol{u}_1
+}.
+\end{aligned}
+$$
 
-**(b)** Starting from the result above, show that $E_k(\boldsymbol{w}^{(t+1)}) = |\lambda_k / \lambda_1| \cdot E_k(\boldsymbol{w}^{(t)})$.
+The last equality follows because the covariance matrix is symmetric, i.e. $\Sigma^\top = \Sigma$. $\square$
 
-*Hint:* recall that the covariance is linked to its eigenvectors and eigenvalues through the equation $\Sigma \boldsymbol{u}_i = \lambda_i \boldsymbol{u}_i$.
+**(b)** Starting from the result above, show that
+
+$$
+E_k(\boldsymbol{w}^{(t+1)}) = \left|\frac{\lambda_k}{\lambda_1}\right| \cdot E_k(\boldsymbol{w}^{(t)}).
+$$
+
+*Hint:* Recall that the covariance is linked to its eigenvectors and eigenvalues through the equation $\Sigma \boldsymbol{u}_i = \lambda_i \boldsymbol{u}_i$.
 
 **Answer:**
 
----
-**(c)** Starting from the result above, show that $E_k(\boldsymbol{w}^{(T)}) = |\lambda_k / \lambda_1|^T \cdot E_k(\boldsymbol{w}^{(0)})$, i.e. the convergence of the algorithm is exponential with the number of time steps $T$.
+Using the result from (a) and the eigenvalue equation, we obtain
+
+$$
+\begin{aligned}
+E_k(\boldsymbol{w}^{(t+1)})
+&= \frac{
+\boldsymbol{w}^{(t)\top}\Sigma\boldsymbol{u}_k
+}{
+\boldsymbol{w}^{(t)\top}\Sigma\boldsymbol{u}_1
+}
+\\[6pt]
+&= \frac{
+\boldsymbol{w}^{(t)\top}\lambda_k\boldsymbol{u}_k
+}{
+\boldsymbol{w}^{(t)\top}\lambda_1\boldsymbol{u}_1
+}
+\\[6pt]
+&= \left|\frac{\lambda_k}{\lambda_1}\right|
+\frac{
+\boldsymbol{w}^{(t)\top}\boldsymbol{u}_k
+}{
+\boldsymbol{w}^{(t)\top}\boldsymbol{u}_1
+}
+\\[6pt]
+&= \left|\frac{\lambda_k}{\lambda_1}\right|
+E_k(\boldsymbol{w}^{(t)}).
+\end{aligned}
+$$
+
+Since $\Sigma$ is a covariance matrix, all its eigenvalues are nonnegative, and we assume $\lambda_1 > 0$. $\square$
+
+**(c)** Starting from the result above, show that
+
+$$
+E_k(\boldsymbol{w}^{(T)}) = \left|\frac{\lambda_k}{\lambda_1}\right|^T \cdot E_k(\boldsymbol{w}^{(0)}),
+$$
+
+i.e. the convergence of the algorithm is exponential with the number of time steps $T$.
 
 **Answer:**
+
+We prove the statement by mathematical induction.
+
+**Base case ($T=0$):**
+
+$$
+\begin{aligned}
+E_k(\boldsymbol{w}^{(0)})
+&= \left|\frac{\lambda_k}{\lambda_1}\right|^0
+E_k(\boldsymbol{w}^{(0)})
+\\
+&= E_k(\boldsymbol{w}^{(0)}).
+\end{aligned}
+$$
+
+Thus, the statement holds for $T=0$.
+
+**Induction hypothesis:**
+
+Assume that the statement holds for some $T \in \mathbb{N}_0$, i.e.
+
+$$
+E_k(\boldsymbol{w}^{(T)})
+= \left|\frac{\lambda_k}{\lambda_1}\right|^T
+E_k(\boldsymbol{w}^{(0)}).
+$$
+
+**Induction step ($T \rightarrow T+1$):**
+
+Using the result from (b) and the induction hypothesis, we obtain
+
+$$
+\begin{aligned}
+E_k(\boldsymbol{w}^{(T+1)})
+&= \left|\frac{\lambda_k}{\lambda_1}\right|
+E_k(\boldsymbol{w}^{(T)})
+\\[6pt]
+&= \left|\frac{\lambda_k}{\lambda_1}\right|
+\left|\frac{\lambda_k}{\lambda_1}\right|^T
+E_k(\boldsymbol{w}^{(0)})
+\\[6pt]
+&= \left|\frac{\lambda_k}{\lambda_1}\right|^{T+1}
+E_k(\boldsymbol{w}^{(0)}).
+\end{aligned}
+$$
+
+Therefore, the statement also holds for $T+1$.
+
+By mathematical induction, we conclude that
+
+$$
+\boxed{
+E_k(\boldsymbol{w}^{(T)})
+= \left|\frac{\lambda_k}{\lambda_1}\right|^T
+E_k(\boldsymbol{w}^{(0)})
+}
+$$
+
+for all $T \in \mathbb{N}_0$. $\square$
